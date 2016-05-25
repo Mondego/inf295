@@ -30,7 +30,7 @@ def get_points(path):
         temp = line.split(',')
         retorno.append(Vector3(float(temp[0]),float(temp[1]),0))
         line = f.readline().strip()
-    #print(retorno[0].X)
+    #print(retorno[0]['X'])
     f.close()
     return retorno'''
 
@@ -157,20 +157,28 @@ class SilverCar(Vehicle.Class()):
         self._Velocity = Vector3(0,0,0)
     else:
         d = 0.5
-        m = (self._Waypoints[1].X - self._Waypoints[0].X)/(self._Waypoints[1].Y - self._Waypoints[0].Y)*-1
-        x0 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[0].X
-        x1 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[1].X
-        y0 = m*(x0 - self._Waypoints[0].X) + self._Waypoints[0].Y
-        y1 = m*(x1 - self._Waypoints[1].X) + self._Waypoints[1].Y
-        temp = Vector3(x1 - x0, y1 - y0, self._Waypoints[1].Z - self._Waypoints[0].Z)
-        #temp = Vector3(self._Waypoints[1].X - self._Waypoints[0].X, self._Waypoints[1].Y - self._Waypoints[0].Y, self._Waypoints[1].Z - self._Waypoints[0].Z)
-        #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[0].X, self._Waypoints[0].Y, x0, y0))
-        #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[1].X, self._Waypoints[1].Y, x1, y1))
+        if((self._Waypoints[1]['Y'] - self._Waypoints[0]['Y']) == 0):
+            m = -1 #check this later, just to avoid division by 0
+        else:
+            m = (self._Waypoints[1]['X'] - self._Waypoints[0]['X'])/(self._Waypoints[1]['Y'] - self._Waypoints[0]['Y'])*-1
+        x0 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[0]['X']
+        x1 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[1]['X']
+        y0 = m*(x0 - self._Waypoints[0]['X']) + self._Waypoints[0]['Y']
+        y1 = m*(x1 - self._Waypoints[1]['X']) + self._Waypoints[1]['Y']
+        temp = Vector3(x1 - x0, y1 - y0, self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
+        #temp = Vector3(self._Waypoints[1]['X'] - self._Waypoints[0]['X'], self._Waypoints[1]['Y'] - self._Waypoints[0]['Y'], self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
+        #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[0]['X'], self._Waypoints[0]['Y'], x0, y0))
+        #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[1]['X'], self._Waypoints[1]['Y'], x1, y1))
 
         module = math.sqrt(math.pow(temp.X, 2) + math.pow(temp.Y, 2) + math.pow(temp.Z, 2))
-        temp.X = (temp.X / module) * self.SPEED
-        temp.Y = (temp.Y / module) * self.SPEED
-        temp.Z = (temp.Z / module) * self.SPEED
+        if(module != 0):
+            temp.X = (temp.X / module) * self.SPEED
+            temp.Y = (temp.Y / module) * self.SPEED
+            temp.Z = (temp.Z / module) * self.SPEED
+        else:
+            temp.X = 0
+            temp.Y = 0
+            temp.Z = 0
         self._Velocity = temp
         self._Waypoints.pop(0)
         self._ticksToTarget = self.TicksToNextTarget()
@@ -277,7 +285,7 @@ class SilverCar(Vehicle.Class()):
     self._ticksToTarget = value
 
   def TicksToNextTarget(self):
-      return math.ceil(math.sqrt(math.pow(self._Waypoints[0].X - self.Position.X, 2) + math.pow(self._Waypoints[0].Y - self.Position.Y, 2) + math.pow(self._Waypoints[0].Z - self.Position.Z, 2))/self.SPEED)
+      return math.ceil(math.sqrt(math.pow(self._Waypoints[0]['X'] - self.Position.X, 2) + math.pow(self._Waypoints[0]['Y'] - self.Position.Y, 2) + math.pow(self._Waypoints[0]['Z'] - self.Position.Z, 2))/self.SPEED)
 
 @join(SilverCar, SilverCar)
 class CarNearCar(SilverCar):
@@ -349,14 +357,14 @@ class ActiveSilverCar(SilverCar.Class()):
     def __predicate__(c):
         return len(c._Waypoints) != 0
 
-    def move(self):
-        self.Position = Vector3(self.Position.X - self.Velocity.X, self.Position.Y + self.Velocity.Y,
-                                self.Position.Z + self.Velocity.Z)
+    #def move(self):
+        #self.Position = Vector3(self.Position.X - self.Velocity.X, self.Position.Y + self.Velocity.Y,
+        #                        self.Position.Z + self.Velocity.Z)
         # logger.debug("[ActiveCar] {2}: Current velocity: {0}, New position {1}".format(self.Velocity, self.Position, self.ID))
 
         # End of ride
-        if (self.Position.X <= self.FINAL_POSITION):
-            self.stop()
+        #if (self.Position.X <= self.FINAL_POSITION):
+        #    self.stop()
 
     def stop(self):
         # logger.debug("[ActiveCar]: {0} stopping".format(self.ID))
