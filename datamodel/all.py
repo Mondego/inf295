@@ -10,6 +10,7 @@ import datamodel.nodesim.datamodel as nodesim
 import datamodel.amazoncar.mydatamodel as amazoncar
 import datamodel.uberCar_Xi.datamodel as xi
 import datamodel.wpcar.datamodel as wp
+import datamodel.silverCar.datamodel as silver
 
 DATAMODEL_TYPES = [
                                         carpedestrian.Car,
@@ -45,5 +46,9 @@ DATAMODEL_TYPES = [
                                         xi.UberCar,
                                         wp.AssignedWPCar,
                                         wp.FreeWPCar,
-                                        wp.WPCar
+                                        wp.WPCar,
+                                        silver.ActiveSilverCar,
+                                        silver.CarNearCar,
+                                        silver.InactiveSilverCar,
+                                        silver.SilverCar
                                 ]
