@@ -31,6 +31,7 @@ class AmazonCar(Vehicle.Class()):
   '''
 
   _Aflag = True
+  Bananas = "Awesome"
   @dimension(bool)
   def Aflag(self):
     return self._Aflag
