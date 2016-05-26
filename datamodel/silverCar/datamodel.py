@@ -13,8 +13,6 @@ from pcc.set import pcc_set
 from pcc.attributes import dimension, primarykey
 import string, math
 
-from spacetime_local.frame import frame
-
 import traceback
 from datamodel.common.datamodel import Vector3, Color, Vehicle
 from datamodel.nodesim.datamodel import RouteRequest, Route, Waypoint, ResidentialNode, BusinessNode
@@ -34,6 +32,19 @@ def get_points(path):
     f.close()
     return retorno'''
 
+
+@pcc_set
+class Ariel(Vehicle.Class()):
+
+    def __init__(self, uid = None):
+        self.ID = uid
+        self.Name = ""
+        self.Length = 30
+        self.Width = 10
+        self.ticksToTarget = 0
+        self.Velocity = Vector3(0,0,0)
+        self.Position = Vector3(0, 0, 0)
+        logger.debug("%s car created", LOG_HEADER)
 
 class Segment:
     p1 = Vector3(0,0,0)
@@ -105,8 +116,8 @@ class SilverCar(Vehicle.Class()):
   _Name = ""
   #FINAL_POSITION = 7000
 
-  def __init__(self, uid=None):
-    self._ID = uid
+  def __init__(self, uid = None):
+    self.ID = uid
     self._Length = 30
     self._Width = 10
     self._ticksToTarget = 0
