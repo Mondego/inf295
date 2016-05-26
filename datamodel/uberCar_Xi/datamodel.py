@@ -51,6 +51,11 @@ class UberCar(Vehicle.Class()):
     def __init__(self, uid=None):
         self.ID = uid
         self.Velocity = Vector3(0, 0, 0)
+        self.Name = "uberCar"
+        self.Position = Vector3(0, 0, 40.5)
+        self.Velocity = Vector3(0, 0, 0)
+        self.Length = 10
+        self.Width = 10
 
 
 @subset(UberCar)
@@ -139,7 +144,7 @@ class CarInDanger(UberCar.Class()):
         logger.debug("[Car]: {0} avoiding collision!".format(self.ID));
 '''
 
-@join(UberCar, UberCar)
+@join(UberCar, Vehicle)
 class CarAndCarInfront(object):
 
     @primarykey(str)
@@ -158,7 +163,7 @@ class CarAndCarInfront(object):
     def car1(self, value):
         self._car1 = value
 
-    @dimension(UberCar)
+    @dimension(Vehicle)
     def frontCar(self):
         return self._frontCar
     @frontCar.setter
