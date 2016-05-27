@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 LOG_HEADER = "[DATAMODEL]"
 
 @pcc_set
-class KiwiCar(Vehicle.Class()):
+class PauseUnpauseCar(Vehicle.Class()):
   apple = "banana"
 
 @pcc_set
