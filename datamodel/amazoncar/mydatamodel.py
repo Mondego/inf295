@@ -25,8 +25,8 @@ logger = logging.getLogger(__name__)
 LOG_HEADER = "[DATAMODEL]"
 
 @pcc_set
-class PineappleCar(Vehicle.Class()):
-  banana = "Pineapples are more fun"
+class AppleCar(Vehicle.Class()):
+  banana = "Apple!"
 
 @pcc_set
 class AmazonCar(Vehicle.Class()):
