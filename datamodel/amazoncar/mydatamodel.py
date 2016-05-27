@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 LOG_HEADER = "[DATAMODEL]"
 
 @pcc_set
-class AllSeemsToBeWorking(Vehicle.Class()):
+class TestWithTS(Vehicle.Class()):
   apple = "banana"
 
 @pcc_set
