@@ -19,32 +19,7 @@ from datamodel.nodesim.datamodel import RouteRequest, Route, Waypoint, Residenti
 
 logger = logging.getLogger(__name__)
 LOG_HEADER = "[SilverCar]"
-'''
-def get_points(path):
-    f = open(path, 'r')
-    retorno = []
-    line = f.readline().strip()
-    while line:
-        temp = line.split(',')
-        retorno.append(Vector3(float(temp[0]),float(temp[1]),0))
-        line = f.readline().strip()
-    #print(retorno[0]['X'])
-    f.close()
-    return retorno'''
 
-
-@pcc_set
-class Ariel(Vehicle.Class()):
-
-    def __init__(self, uid = None):
-        self.ID = uid
-        self.Name = ""
-        self.Length = 30
-        self.Width = 10
-        self.ticksToTarget = 0
-        self.Velocity = Vector3(0,0,0)
-        self.Position = Vector3(0, 0, 0)
-        logger.debug("%s car created", LOG_HEADER)
 
 class Segment:
     p1 = Vector3(0,0,0)
@@ -122,7 +97,7 @@ class SilverCar(Vehicle.Class()):
     self._Width = 10
     self._ticksToTarget = 0
     self._Velocity = Vector3(0,0,0)
-    self._Position = Vector3(0, 0, 0)
+    self._Position = Vector3(0, 0, 40.5)
     logger.debug("%s car created", LOG_HEADER)
 
 
