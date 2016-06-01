@@ -173,7 +173,7 @@ class InactiveCar_akshatp(Car_akshatp.Class()):
             self.Position = Vector3(r[0]['X'], r[0]['Y'], self.Position.Z)
 
             ddash = math.hypot(self.Position.X-r[1]['X'], self.Position.Y-r[1]['Y'])
-            self.Velocity = Vector3(self.Position.X + (v/ddash) * (r[1]['X']-self.Position.X), self.Position.Y + (v/ddash) * (r[1]['Y']-self.Position.Y), 0)
+            self.Velocity = Vector3((v/ddash) * (r[1]['X']-self.Position.X), (v/ddash) * (r[1]['Y']-self.Position.Y), 0)
         else:
             self.Position = Vector3(0, 0, self.Position.Z)
             self.Velocity = Vector3(0, 0, 0)
