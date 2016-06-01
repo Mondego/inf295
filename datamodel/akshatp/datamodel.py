@@ -162,36 +162,22 @@ class InactiveCar_akshatp(Car_akshatp.Class()):
         return len(c.Route) == 0
 
     def start(self, route=[], v=10):
-        self.TopSpeed = v
-        self.Velocity = Vector3(v,0,0)
-        self.Route = route
-
         r = route
-        l = len(r)
-        cr = 1
-        p = self.Position
-        if l > cr > 0 and v > 0:
-            lastx = r[l-1]['X']
-            lasty = r[l-1]['Y']
-            if not (p.X == lastx and p.Y == lasty):
-                currx = p.X
-                curry = p.Y
-                routeendx = r[cr]['X']
-                routeendy = r[cr]['Y']
-                dist = math.sqrt(((routeendx-currx)*(routeendx-currx))+((routeendy-curry)*(routeendy-curry)))
-                if dist != 0:
-                    finalx = currx + (v / dist) * (routeendx - currx)
-                    finaly = curry + (v / dist) * (routeendy - curry)
-                    finaldist = math.sqrt(((finalx-currx)*(finalx-currx))+((finaly-curry)*(finaly-curry)))
-                    if finaldist <= dist:
-                        if not (p.X == self.PrevPosition.X and p.Y == self.PrevPosition.Y and p.Z == self.PrevPosition.Z):
-                            self.PrevPosition = Vector3(p.X, p.Y, p.Z)
-                        self.Position = Vector3(finalx, finaly, p.Z)
-                    else:
-                        if not (p.X == self.PrevPosition.X and p.Y == self.PrevPosition.Y and p.Z == self.PrevPosition.Z):
-                            self.PrevPosition = Vector3(p.X, p.Y, p.Z)
-                        self.Position = Vector3(routeendx, routeendy, p.Z)
-                        self.CurrentRoute += 1
+
+        self.TopSpeed = v
+        self.Route = r
+
+        # Calculating position and velocity vector according to route points
+        if len(route) > 1:
+            self.CurrentRoute += 1
+            self.Position = Vector3(r[0]['X'], r[0]['Y'], self.Position.Z)
+
+            ddash = math.hypot(self.Position.X-r[1]['X'], self.Position.Y-r[1]['Y'])
+            self.Velocity = Vector3(self.Position.X + (v/ddash) * (r[1]['X']-self.Position.X), self.Position.Y + (v/ddash) * (r[1]['Y']-self.Position.Y), 0)
+        else:
+            self.Position = Vector3(0, 0, self.Position.Z)
+            self.Velocity = Vector3(0, 0, 0)
+
 
 @subset(Car_akshatp)
 class ActiveCar_akshatp(Car_akshatp.Class()):
@@ -211,32 +197,26 @@ class ActiveCar_akshatp(Car_akshatp.Class()):
         p = self.Position
         v = self.Velocity
 
-        if l > cr > 0 and v > 0:
-            lastx = r[l-1]['X']
-            lasty = r[l-1]['Y']
-            if p.X == lastx and p.Y == lasty:
+        if l > cr > 0:
+            if p.X == r[l-1]['X'] and p.Y == r[l-1]['Y']:
                 self.stop()
             else:
-                currx = p.X
-                curry = p.Y
-                routeendx = r[cr]['X']
-                routeendy = r[cr]['Y']
-                dist = math.sqrt(((routeendx - currx) * (routeendx - currx)) + ((routeendy - curry) * (routeendy - curry)))
-                if dist != 0:
-                    finalx = currx + (v / dist) * (routeendx - currx)
-                    finaly = curry + (v / dist) * (routeendy - curry)
-                    finaldist = math.sqrt(((finalx - currx) * (finalx - currx)) + ((finaly - curry) * (finaly - curry)))
-                    if finaldist < dist:
+                # Distance between current position and end of route
+                d = math.hypot(r[cr]['X']-p.X, r[cr]['Y']-p.Y)
+                if d > 0:
+                    # Position after moving
+                    fx = p.X + v.X
+                    fy = p.Y + v.Y
+                    fd = math.hypot(fx-p.X, fy-p.Y)
+                    if fd < d:
                         if not (p.X == self.PrevPosition.X and p.Y == self.PrevPosition.Y and p.Z == self.PrevPosition.Z):
                             self.PrevPosition = Vector3(p.X, p.Y, p.Z)
-                        self.Position = Vector3(finalx, finaly, p.Z)
+                        self.Position = Vector3(fx, fy, p.Z)
                     else:
                         if not (p.X == self.PrevPosition.X and p.Y == self.PrevPosition.Y and p.Z == self.PrevPosition.Z):
                             self.PrevPosition = Vector3(p.X, p.Y, p.Z)
-                        self.Position = Vector3(routeendx, routeendy, p.Z)
+                        self.Position = Vector3(r[cr]['X'], r[cr]['Y'], p.Z)
                         self.CurrentRoute += 1
-        if v < self.TopSpeed:
-            self.Velocity = Vector3(min(v + (0.3*self.TopSpeed), self.TopSpeed),0,0)
 
     def stop(self):
         self.Velocity = Vector3(0,0,0)
