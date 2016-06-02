@@ -83,7 +83,7 @@ class SilverCar(Vehicle.Class()):
   '''
   #_Waypoints = get_points("/Users/Pedro/Dev/spacetime/python/datamodel/silverCar/car-4.rd")
   _Waypoints = []
-  SPEED = 20
+  SPEED = 2
   route = None
   numRequestedRoutes = 0
   numRoutesFinished = 0
