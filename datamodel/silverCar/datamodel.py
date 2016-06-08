@@ -122,19 +122,6 @@ class SilverCar(Vehicle.Class()):
 
 
   def updateVelocity(self):
-    '''if(self.route is None):
-        routes = self.frame.get_new(Route)
-        if len(routes) > 0:
-            for rt in routes:
-                if rt.Owner == self._ID:
-                    self.route = rt
-                    self.frame.delete(Route, rt)
-                    logger.debug("Route Obtained FROM: {0} TO: {1}".format(self.route.Source, self.route.Destination))
-                    _Waypoints = rt.Waypoints()
-                    #self._ticksToTarget = self.TicksToNextTarget()
-                    break
-'''
-
     #if(self.route is not None):
     if(len(self._Waypoints) == 1):
         self.numRoutesFinished += 1
@@ -147,12 +134,12 @@ class SilverCar(Vehicle.Class()):
             m = -1 #check this later, just to avoid division by 0
         else:
             m = (self._Waypoints[1]['X'] - self._Waypoints[0]['X'])/(self._Waypoints[1]['Y'] - self._Waypoints[0]['Y'])*-1
-        x0 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[0]['X']
-        x1 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[1]['X']
-        y0 = m*(x0 - self._Waypoints[0]['X']) + self._Waypoints[0]['Y']
-        y1 = m*(x1 - self._Waypoints[1]['X']) + self._Waypoints[1]['Y']
-        temp = Vector3(x1 - x0, y1 - y0, self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
-        #temp = Vector3(self._Waypoints[1]['X'] - self._Waypoints[0]['X'], self._Waypoints[1]['Y'] - self._Waypoints[0]['Y'], self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
+        #x0 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[0]['X']
+        #x1 = math.sqrt(math.pow(d,2)/(1+math.pow(m,2))) + self._Waypoints[1]['X']
+        #y0 = m*(x0 - self._Waypoints[0]['X']) + self._Waypoints[0]['Y']
+        #y1 = m*(x1 - self._Waypoints[1]['X']) + self._Waypoints[1]['Y']
+        #temp = Vector3(x1 - x0, y1 - y0, self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
+        temp = Vector3(self._Waypoints[1]['X'] - self._Waypoints[0]['X'], self._Waypoints[1]['Y'] - self._Waypoints[0]['Y'], self._Waypoints[1]['Z'] - self._Waypoints[0]['Z'])
         #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[0]['X'], self._Waypoints[0]['Y'], x0, y0))
         #print("Original: X = {0}, Y = {1}; Novo: X = {2}, Y = {3}".format(self._Waypoints[1]['X'], self._Waypoints[1]['Y'], x1, y1))
 
