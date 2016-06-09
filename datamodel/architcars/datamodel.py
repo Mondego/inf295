@@ -100,13 +100,10 @@ class ArchitCar(Vehicle.Class()):
 
 @subset(ArchitCar)
 class InactiveArchitCar(ArchitCar.Class()):
-    @staticmethod
-    def __query__(cars):
-        return [c for c in cars if InactiveArchitCar.__predicate__(c)]
 
     @staticmethod
     def __predicate__(c):
-        return c.Position == Vector3(0,0,40.5)
+        return c.Position.X == 0 and c.Position.Y == 0
 
     def start(self, route, top_speed):
         logger.debug("[InactiveCar]: {0} starting".format(self.ID))
@@ -124,13 +121,10 @@ class InactiveArchitCar(ArchitCar.Class()):
 
 @subset(ArchitCar)
 class ActiveArchitCar(ArchitCar.Class()):
-    @staticmethod
-    def __query__(cars):  # @DontTrace
-        return [c for c in cars if ActiveArchitCar.__predicate__(c)]
 
     @staticmethod
     def __predicate__(c):
-        return c.Position != Vector3(0,0,40.5)
+        return c.Position.X != 0 or c.Position.Y != 0
 
     def move(self):
     
